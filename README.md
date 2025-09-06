@@ -5,7 +5,9 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Electron](https://img.shields.io/badge/Electron-Framework-9feaf9)
 
-> A lightweight, borderless desktop application for managing code snippets with syntax highlighting and dark mode support.
+> **Copas** _(Copy Paste)_ - A lightweight, borderless desktop application for managing code snippets with syntax highlighting and dark mode support.
+
+Perfect name for a tool designed to make copying and pasting code snippets effortless! 📋✨
 
 ## ✨ Features
 

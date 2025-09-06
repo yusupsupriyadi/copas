@@ -32,7 +32,7 @@
     "productName": "Copas",
     "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
     "directories": {
-      "output": "build"
+      "output": "dist"
     },
     "files": [
       "src/**/*",
