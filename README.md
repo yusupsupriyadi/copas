@@ -113,22 +113,105 @@ All snippets are stored locally in your browser's localStorage. No data is sent 
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! This project follows GitHub's standard contribution workflow with branch protection rules.
 
-### Development Guidelines
+📋 **For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)**
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### 🔒 Branch Protection Rules
 
-### Code Style
+The `master` branch is protected with the following rules:
+- **Pull Request Required**: Direct pushes to master are not allowed
+- **Review Required**: All PRs need at least 1 approving review
+- **Conversation Resolution**: All PR conversations must be resolved
+- **Stale Review Dismissal**: Reviews are dismissed when new commits are pushed
 
-- Use vanilla JavaScript (no frameworks)
-- Follow existing code patterns
-- Maintain the lightweight philosophy
-- Ensure cross-platform compatibility
+### 📝 Contribution Workflow
+
+1. **Fork the Repository**
+   ```bash
+   # Fork on GitHub, then clone your fork
+   git clone https://github.com/YOUR_USERNAME/copas.git
+   cd copas
+   ```
+
+2. **Set Up Development Environment**
+   ```bash
+   # Install dependencies
+   npm install
+   
+   # Start development mode
+   npm run dev
+   ```
+
+3. **Create Feature Branch**
+   ```bash
+   # Create and switch to feature branch
+   git checkout -b feature/amazing-feature
+   # or for bug fixes
+   git checkout -b fix/bug-description
+   ```
+
+4. **Make Your Changes**
+   - Follow the existing code style and patterns
+   - Test your changes thoroughly
+   - Ensure the app builds and runs correctly
+
+5. **Commit Your Changes**
+   ```bash
+   # Stage your changes
+   git add .
+   
+   # Commit with descriptive message
+   git commit -m "feat: add amazing new feature"
+   # or for bug fixes
+   git commit -m "fix: resolve issue with snippet saving"
+   ```
+
+6. **Push and Create Pull Request**
+   ```bash
+   # Push to your fork
+   git push origin feature/amazing-feature
+   
+   # Create PR on GitHub
+   gh pr create --title "Add amazing new feature" --body "Description of changes"
+   ```
+
+7. **PR Review Process**
+   - Your PR will be reviewed by maintainers
+   - Address any feedback or requested changes
+   - Once approved, it will be merged to master
+
+### 🎯 Contribution Guidelines
+
+#### Code Style
+- **Language**: Use vanilla JavaScript (no frameworks)
+- **Structure**: Follow existing project organization in `src/` folder
+- **Consistency**: Match existing code patterns and conventions
+- **Performance**: Maintain the lightweight philosophy
+- **Compatibility**: Ensure Windows compatibility (primary platform)
+
+#### Commit Messages
+Use conventional commit format:
+- `feat:` for new features
+- `fix:` for bug fixes  
+- `docs:` for documentation
+- `style:` for formatting changes
+- `refactor:` for code restructuring
+- `test:` for adding tests
+
+#### What to Contribute
+- 🐛 Bug fixes and improvements
+- ✨ New features from the roadmap
+- 📚 Documentation improvements
+- 🎨 UI/UX enhancements
+- ⚡ Performance optimizations
+- 🧪 Tests and code quality improvements
+
+#### Before Contributing
+- Check existing issues and PRs to avoid duplicates
+- For major changes, create an issue first to discuss
+- Ensure your changes don't break existing functionality
+- Test with both light and dark modes
 
 ## 🐛 Bug Reports
 
