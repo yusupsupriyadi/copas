@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'">
     <title>Copas</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,11 +13,7 @@
             <div class="controls">
                 <input type="text" id="searchInput" class="search-input no-drag" placeholder="Search snippets...">
                 <button class="btn no-drag" id="addBtn">+ ADD</button>
-                <button class="btn btn-icon no-drag" id="settingsBtn" title="Settings">⚙️</button>
-            </div>
-            <div class="stats">
-                <span id="totalSnippets">0 snippets</span>
-                <span id="filteredSnippets"></span>
+                <button class="btn btn-icon no-drag" id="darkModeBtn" onclick="toggleDark()" title="Toggle Dark Mode">🌙</button>
             </div>
         </div>
 
@@ -53,73 +49,17 @@
         </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Settings</h2>
-            </div>
-            <div class="modal-body">
-                <div class="setting-item">
-                    <label>Dark Mode</label>
-                    <div class="toggle-container">
-                        <input type="checkbox" id="darkModeToggle" class="toggle-input">
-                        <label for="darkModeToggle" class="toggle-label">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <label>Auto Start on Boot</label>
-                    <div class="toggle-container">
-                        <input type="checkbox" id="autoStartToggle" class="toggle-input">
-                        <label for="autoStartToggle" class="toggle-label">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary no-drag" id="closeSettingsBtn">CLOSE</button>
-            </div>
-        </div>
-    </div>
 
-    <script type="application/json" data-legacy="true">
+    <script>
         let snippets = [];
-        let currentEditId = null;
         let filteredSnippets = [];
-
-        // Load snippets from localStorage on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadSnippets();
-            renderSnippets();
-            updateStats();
-
-            // Search functionality
-            document.getElementById('searchInput').addEventListener('input', function(e) {
-                filterSnippets(e.target.value);
-            });
-
-            // Close modal when clicking outside
-            document.getElementById('snippetModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
-
-            // Handle Escape key to close modal
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && document.getElementById('snippetModal').style.display === 'block') {
-                    closeModal();
-                }
-            });
-        });
+        let currentEditId = null;
+        let contextMenuSnippetId = null;
 
         function loadSnippets() {
             const saved = localStorage.getItem('snippets');
             if (saved) {
-                snippets = JSON.parse(saved);
+                try { snippets = JSON.parse(saved) || []; } catch { snippets = []; }
             }
             filteredSnippets = [...snippets];
         }
@@ -129,64 +69,49 @@
         }
 
         function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            return Date.now().toString(36) + Math.random().toString(36).slice(2);
+        }
+
+        function generateTitle(content) {
+            const firstLine = content.split('\n')[0].trim();
+            if (firstLine.length > 0) return firstLine.length > 50 ? firstLine.substring(0, 50) + '...' : firstLine;
+            return content.length > 50 ? content.substring(0, 50) + '...' : content;
         }
 
         function openAddModal() {
-            console.log('Opening add modal...'); // Debug log
             currentEditId = null;
             document.getElementById('snippetContent').value = '';
             const modal = document.getElementById('snippetModal');
             modal.style.display = 'block';
             modal.classList.add('show');
-            setTimeout(() => {
-                document.getElementById('snippetContent').focus();
-            }, 100);
+            setTimeout(() => document.getElementById('snippetContent').focus(), 50);
         }
 
         function openEditModal(id) {
-            const snippet = snippets.find(s => s.id === id);
+            const snippet = snippets.find((s) => s.id === id);
             if (!snippet) return;
-
             currentEditId = id;
             document.getElementById('snippetContent').value = snippet.content;
             const modal = document.getElementById('snippetModal');
             modal.style.display = 'block';
             modal.classList.add('show');
-            setTimeout(() => {
-                document.getElementById('snippetContent').focus();
-            }, 100);
+            setTimeout(() => document.getElementById('snippetContent').focus(), 50);
         }
 
         function closeModal() {
-            console.log('Closing modal...'); // Debug log
             const modal = document.getElementById('snippetModal');
             modal.style.display = 'none';
             modal.classList.remove('show');
             currentEditId = null;
         }
 
-        function generateTitle(content) {
-            // Ambil 50 karakter pertama dari konten sebagai title
-            const firstLine = content.split('\n')[0].trim();
-            if (firstLine.length > 0) {
-                return firstLine.length > 50 ? firstLine.substring(0, 50) + '...' : firstLine;
-            }
-            return content.length > 50 ? content.substring(0, 50) + '...' : content;
-        }
-
         function saveSnippet() {
             const content = document.getElementById('snippetContent').value.trim();
-
-            if (!content) {
-                alert('Content is required!');
-                return;
-            }
+            if (!content) return;
 
             const title = generateTitle(content);
 
             if (currentEditId) {
-                // Edit existing snippet
                 const index = snippets.findIndex(s => s.id === currentEditId);
                 if (index !== -1) {
                     snippets[index] = {
@@ -197,7 +122,6 @@
                     };
                 }
             } else {
-                // Add new snippet
                 const newSnippet = {
                     id: generateId(),
                     title,
@@ -211,42 +135,23 @@
             saveToStorage();
             closeModal();
             filterSnippets(document.getElementById('searchInput').value);
-            updateStats();
         }
 
         function deleteSnippet(id) {
-            if (confirm('Are you sure you want to delete this snippet?')) {
-                snippets = snippets.filter(s => s.id !== id);
-                saveToStorage();
-                filterSnippets(document.getElementById('searchInput').value);
-                updateStats();
-            }
+            snippets = snippets.filter(s => s.id !== id);
+            saveToStorage();
+            filterSnippets(document.getElementById('searchInput').value);
         }
 
         async function copySnippet(content, cardElement) {
             try {
                 await navigator.clipboard.writeText(content);
-                // Visual feedback
-                const originalBg = cardElement.style.backgroundColor;
-                const originalBorder = cardElement.style.borderColor;
-                
-                cardElement.style.backgroundColor = '#e8f5e8';
-                cardElement.style.borderColor = '#4CAF50';
-                cardElement.style.transform = 'scale(0.98)';
-                
-                setTimeout(() => {
-                    cardElement.style.backgroundColor = originalBg;
-                    cardElement.style.borderColor = originalBorder;
-                    cardElement.style.transform = '';
-                }, 200);
+                cardElement.classList.add('copied');
+                setTimeout(() => cardElement.classList.remove('copied'), 200);
             } catch (err) {
-                alert('Failed to copy to clipboard');
                 console.error('Failed to copy: ', err);
             }
         }
-
-        // Context Menu Variables and Functions
-        let contextMenuSnippetId = null;
 
         function showContextMenu(event, snippetId) {
             event.preventDefault();
@@ -256,11 +161,14 @@
             contextMenu.style.display = 'block';
             contextMenu.style.left = event.pageX + 'px';
             contextMenu.style.top = event.pageY + 'px';
+            
+            setTimeout(() => {
+                document.addEventListener('click', hideContextMenu, { once: true });
+            }, 10);
         }
 
         function hideContextMenu() {
-            const contextMenu = document.getElementById('contextMenu');
-            contextMenu.style.display = 'none';
+            document.getElementById('contextMenu').style.display = 'none';
             contextMenuSnippetId = null;
         }
 
@@ -278,13 +186,6 @@
             }
         }
 
-        // Hide context menu when clicking elsewhere
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.context-menu') && !e.target.closest('.snippet-card')) {
-                hideContextMenu();
-            }
-        });
-
         function filterSnippets(searchTerm) {
             if (!searchTerm.trim()) {
                 filteredSnippets = [...snippets];
@@ -296,7 +197,6 @@
                 );
             }
             renderSnippets();
-            updateStats();
         }
 
         function renderSnippets() {
@@ -308,52 +208,32 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <h3>No results found</h3>
-                            <p>No snippets found matching "${searchTerm}"</p>
-                        </div>
-                    `;
+                            <p>No snippets found matching "${escapeHtml(searchTerm)}"</p>
+                        </div>`;
                 } else {
                     container.innerHTML = `
                         <div class="empty-state">
                             <h3>No snippets yet</h3>
                             <p>Click "ADD" button to create your first snippet</p>
-                        </div>
-                    `;
+                        </div>`;
                 }
                 return;
             }
 
             const html = `
                 <div class="snippets-grid">
-                    ${filteredSnippets.map(snippet => {
-                        const preview = snippet.content.length > 100 
-                            ? snippet.content.substring(0, 100) + '...' 
-                            : snippet.content;
-                        
+                    ${filteredSnippets.map((snippet) => {
+                        const preview = snippet.content.length > 100 ? snippet.content.substring(0, 100) + '...' : snippet.content;
                         return `
                             <div class="snippet-card" data-id="${snippet.id}" onclick="copySnippet(\`${escapeHtml(snippet.content).replace(/`/g, '\\\\`')}\`, this)" oncontextmenu="showContextMenu(event, '${snippet.id}'); return false;" style="cursor: pointer;" title="Click to copy">
                                 <div class="snippet-content">${escapeHtml(preview)}</div>
-                            </div>
-                        `;
+                            </div>`;
                     }).join('')}
-                </div>
-            `;
-            
+                </div>`;
+
             container.innerHTML = html;
         }
 
-        function updateStats() {
-            const total = snippets.length;
-            const filtered = filteredSnippets.length;
-            const searchTerm = document.getElementById('searchInput').value.trim();
-            
-            document.getElementById('totalSnippets').textContent = `${total} snippet${total !== 1 ? 's' : ''}`;
-            
-            if (searchTerm && filtered !== total) {
-                document.getElementById('filteredSnippets').textContent = `(${filtered} shown)`;
-            } else {
-                document.getElementById('filteredSnippets').textContent = '';
-            }
-        }
 
         function escapeHtml(text) {
             const div = document.createElement('div');
@@ -361,84 +241,78 @@
             return div.innerHTML;
         }
 
-        // Handle form submission with Enter
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.ctrlKey && document.getElementById('snippetModal').style.display === 'block') {
-                saveSnippet();
-            }
-        });
 
-        // Settings Modal Functions
-        function openSettingsModal() {
-            const modal = document.getElementById('settingsModal');
-            modal.style.display = 'block';
-            modal.classList.add('show');
+        // Dark mode toggle - SIMPLE HEADER ICON
+        function toggleDark() {
+            var body = document.body;
+            var btn = document.getElementById('darkModeBtn');
             
-            // Load current dark mode setting
-            const isDarkMode = localStorage.getItem('darkMode') === 'true';
-            document.getElementById('darkModeToggle').checked = isDarkMode;
-            
-            // Load current auto start setting
-            const isAutoStart = localStorage.getItem('autoStart') === 'true';
-            document.getElementById('autoStartToggle').checked = isAutoStart;
-        }
-
-        function closeSettingsModal() {
-            const modal = document.getElementById('settingsModal');
-            modal.style.display = 'none';
-            modal.classList.remove('show');
-        }
-
-        // Dark Mode Functions
-        function toggleDarkMode() {
-            const isEnabled = document.getElementById('darkModeToggle').checked;
-            localStorage.setItem('darkMode', isEnabled);
-            applyDarkMode(isEnabled);
-        }
-
-        function applyDarkMode(isDarkMode) {
-            if (isDarkMode) {
-                document.body.classList.add('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                // Matikan dark mode
+                body.classList.remove('dark-mode');
+                btn.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
             } else {
-                document.body.classList.remove('dark-mode');
+                // Aktifkan dark mode  
+                body.classList.add('dark-mode');
+                btn.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // Load theme saat page load
+        function loadTheme() {
+            var theme = localStorage.getItem('theme');
+            var btn = document.getElementById('darkModeBtn');
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+                btn.textContent = '☀️';
+            } else {
+                btn.textContent = '🌙';
             }
         }
 
-        // Auto Start Functions
-        function toggleAutoStart() {
-            const isEnabled = document.getElementById('autoStartToggle').checked;
-            localStorage.setItem('autoStart', isEnabled);
+
+        // Load settings and setup
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSnippets();
+            renderSnippets();
             
-            // Send message to main process to enable/disable auto start
-            if (window.electronAPI && window.electronAPI.setAutoStart) {
-                window.electronAPI.setAutoStart(isEnabled);
-            }
-        }
-
-        // Load settings on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const isDarkMode = localStorage.getItem('darkMode') === 'true';
-            applyDarkMode(isDarkMode);
+            // Load theme yang sudah disimpan
+            loadTheme();
             
-            // Add event listeners
-            document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
-            document.getElementById('autoStartToggle').addEventListener('change', toggleAutoStart);
-        });
+            // Search
+            document.getElementById('searchInput')?.addEventListener('input', (e) => {
+                filterSnippets(e.target.value);
+            });
 
-        // Close settings modal when clicking outside
-        document.getElementById('settingsModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSettingsModal();
-            }
-        });
+            // Modal events
+            document.getElementById('snippetModal')?.addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeModal();
+            });
 
-        // Handle Escape key for settings modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('settingsModal').style.display === 'block') {
-                closeSettingsModal();
-            }
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (document.getElementById('snippetModal').style.display === 'block') {
+                        closeModal();
+                    }
+                }
+            });
+
+            // Button events
+            document.getElementById('addBtn')?.addEventListener('click', openAddModal);
+            document.getElementById('cancelSnippetBtn')?.addEventListener('click', closeModal);
+            document.getElementById('saveSnippetBtn')?.addEventListener('click', saveSnippet);
+            
+            // Context menu events
+            document.getElementById('contextEdit')?.addEventListener('click', contextEdit);
+            document.getElementById('contextDelete')?.addEventListener('click', contextDelete);
+            
+            // Hide context menu when clicking outside
+            document.addEventListener('click', hideContextMenu);
         });
     </script>
-    <script src="renderer.js" defer></script>
 </body>
 </html>

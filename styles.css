@@ -394,6 +394,7 @@ body {
 .toggle-container {
     position: relative;
     display: inline-block;
+    z-index: 10;
 }
 
 .toggle-input {
@@ -409,6 +410,9 @@ body {
     position: relative;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 
 .toggle-slider {
@@ -420,6 +424,7 @@ body {
     background-color: white;
     border-radius: 50%;
     transition: transform 0.3s ease;
+    pointer-events: none;
 }
 
 .toggle-input:checked + .toggle-label {
@@ -428,6 +433,10 @@ body {
 
 .toggle-input:checked + .toggle-label .toggle-slider {
     transform: translateX(24px);
+}
+
+.toggle-label:hover {
+    opacity: 0.8;
 }
 
 /* Dark Mode Styles */
