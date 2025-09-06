@@ -46,6 +46,79 @@ body {
     -webkit-app-region: no-drag;
 }
 
+.auto-start-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auto-start-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.dark-mode .auto-start-label {
+    color: #ccc;
+}
+
+/* Simple Toggle Switch */
+.simple-toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.simple-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 26px;
+    transition: 0.3s;
+}
+
+.toggle-switch:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.simple-toggle input:checked + .toggle-switch {
+    background-color: #4CAF50;
+}
+
+.simple-toggle input:checked + .toggle-switch:before {
+    transform: translateX(24px);
+}
+
+.dark-mode .toggle-switch {
+    background-color: #555;
+}
+
+.dark-mode .simple-toggle input:checked + .toggle-switch {
+    background-color: #66BB6A;
+}
+
 .stats {
     display: flex;
     gap: 10px;

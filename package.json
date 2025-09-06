@@ -32,13 +32,12 @@
     "productName": "Copas",
     "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
     "directories": {
-      "output": "dist"
+      "output": "build"
     },
     "files": [
       "main.js",
       "preload.js",
       "index.html",
-      "renderer.js",
       "styles.css",
       "icon-32x32.ico",
       "package.json"
@@ -51,7 +50,9 @@
         { "target": "portable", "arch": ["x64"] }
       ],
       "publisherName": "Copas Development Team",
-      "icon": "icon-256x256.ico"
+      "icon": "icon-256x256.ico",
+      "certificateFile": null,
+      "certificatePassword": null
     },
     "nsis": {
       "oneClick": false,
@@ -59,7 +60,10 @@
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "runAfterFinish": false,
+      "menuCategory": "Copas",
+      "shortcutName": "Copas Snippet Manager"
     },
     "forceCodeSigning": false,
     "nodeGypRebuild": false

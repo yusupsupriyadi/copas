@@ -13,6 +13,13 @@
             <div class="controls">
                 <input type="text" id="searchInput" class="search-input no-drag" placeholder="Search snippets...">
                 <button class="btn no-drag" id="addBtn">+ ADD</button>
+                <div class="auto-start-group no-drag">
+                    <span class="auto-start-label">Auto-start:</span>
+                    <label class="simple-toggle">
+                        <input type="checkbox" id="autoStartToggle">
+                        <span class="toggle-switch"></span>
+                    </label>
+                </div>
                 <button class="btn btn-icon no-drag" id="darkModeBtn" onclick="toggleDark()" title="Toggle Dark Mode">🌙</button>
             </div>
         </div>
@@ -272,6 +279,46 @@
             }
         }
 
+        // Auto-start functionality
+        async function toggleAutoStart() {
+            try {
+                const checkbox = document.getElementById('autoStartToggle');
+                const newStatus = checkbox.checked;
+                
+                const result = await window.electronAPI?.setAutoStart(newStatus);
+                if (result?.success) {
+                    // Status sudah updated di checkbox, tidak perlu update lagi
+                } else {
+                    // Revert checkbox jika gagal
+                    checkbox.checked = !newStatus;
+                    console.error('Failed to set auto-start:', result?.error);
+                }
+            } catch (error) {
+                // Revert checkbox jika error
+                const checkbox = document.getElementById('autoStartToggle');
+                checkbox.checked = !checkbox.checked;
+                console.error('Auto-start toggle error:', error);
+            }
+        }
+
+        function updateAutoStartToggle(isEnabled) {
+            const checkbox = document.getElementById('autoStartToggle');
+            if (checkbox) {
+                checkbox.checked = isEnabled;
+            }
+        }
+
+        async function loadAutoStartStatus() {
+            try {
+                if (window.electronAPI?.getAutoStart) {
+                    const status = await window.electronAPI.getAutoStart();
+                    updateAutoStartToggle(status?.value || false);
+                }
+            } catch (error) {
+                console.error('Failed to load auto-start status:', error);
+            }
+        }
+
 
         // Load settings and setup
         document.addEventListener('DOMContentLoaded', () => {
@@ -280,6 +327,9 @@
             
             // Load theme yang sudah disimpan
             loadTheme();
+            
+            // Load auto-start status
+            loadAutoStartStatus();
             
             // Search
             document.getElementById('searchInput')?.addEventListener('input', (e) => {
@@ -305,6 +355,9 @@
             document.getElementById('addBtn')?.addEventListener('click', openAddModal);
             document.getElementById('cancelSnippetBtn')?.addEventListener('click', closeModal);
             document.getElementById('saveSnippetBtn')?.addEventListener('click', saveSnippet);
+            
+            // Auto-start toggle event
+            document.getElementById('autoStartToggle')?.addEventListener('change', toggleAutoStart);
             
             // Context menu events
             document.getElementById('contextEdit')?.addEventListener('click', contextEdit);
