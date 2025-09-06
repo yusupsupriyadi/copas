@@ -47,6 +47,7 @@
     "win": {
       "target": [
         { "target": "nsis", "arch": ["x64"] },
+        { "target": "msi", "arch": ["x64"] },
         { "target": "portable", "arch": ["x64"] }
       ],
       "publisherName": "Copas Development Team",
@@ -64,6 +65,14 @@
       "runAfterFinish": false,
       "menuCategory": "Copas",
       "shortcutName": "Copas Snippet Manager"
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": false,
+      "upgradeCode": "12345678-1234-1234-1234-123456789012",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "menuCategory": "Copas"
     },
     "forceCodeSigning": false,
     "nodeGypRebuild": false
