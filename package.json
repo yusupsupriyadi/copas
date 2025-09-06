@@ -1,0 +1,67 @@
+{
+  "name": "copas",
+  "productName": "Copas",
+  "version": "1.0.0",
+  "description": "Simple and efficient snippet manager for developers",
+  "main": "main.js",
+  "homepage": ".",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:dir": "electron-builder --dir",
+    "dist": "electron-builder --publish=never"
+  },
+  "keywords": [
+    "electron",
+    "snippet",
+    "manager",
+    "clipboard",
+    "developer",
+    "tools"
+  ],
+  "author": "Copas Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.copas.snippet-manager",
+    "productName": "Copas",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer.js",
+      "styles.css",
+      "icon-32x32.ico",
+      "package.json"
+    ],
+    "asar": true,
+    "compression": "maximum",
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "publisherName": "Copas Development Team",
+      "icon": "icon-256x256.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "forceCodeSigning": false,
+    "nodeGypRebuild": false
+  }
+}
