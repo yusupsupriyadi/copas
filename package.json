@@ -1,77 +1,104 @@
 {
-  "name": "copas",
-  "productName": "Copas",
-  "version": "1.0.0",
-  "description": "Simple and efficient snippet manager for developers",
-  "main": "src/main.js",
-  "homepage": ".",
-  "scripts": {
-    "start": "electron .",
-    "dev": "electron . --dev",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "build:dir": "electron-builder --dir",
-    "dist": "electron-builder --publish=never"
-  },
-  "keywords": [
-    "electron",
-    "snippet",
-    "manager",
-    "clipboard",
-    "developer",
-    "tools"
-  ],
-  "author": "Copas Development Team",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^38.0.0",
-    "electron-builder": "^24.13.3"
-  },
-  "build": {
-    "appId": "com.copas.snippet-manager",
-    "productName": "Copas",
-    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "src/**/*",
-      "icon-32x32.ico",
-      "package.json"
-    ],
-    "asar": true,
-    "compression": "maximum",
-    "win": {
-      "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "msi", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
-      ],
-      "publisherName": "Copas Development Team",
-      "icon": "icon-256x256.ico",
-      "certificateFile": null,
-      "certificatePassword": null
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "runAfterFinish": false,
-      "menuCategory": "Copas",
-      "shortcutName": "Copas Snippet Manager"
-    },
-    "msi": {
-      "oneClick": false,
-      "perMachine": false,
-      "upgradeCode": "12345678-1234-1234-1234-123456789012",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "menuCategory": "Copas"
-    },
-    "forceCodeSigning": false,
-    "nodeGypRebuild": false
-  }
+	"name": "copas",
+	"productName": "Copas",
+	"version": "1.0.0",
+	"description": "Simple and efficient snippet manager for developers",
+	"main": "src/main.js",
+	"homepage": ".",
+	"scripts": {
+		"start": "electron .",
+		"dev": "electron . --dev",
+		"build": "electron-builder",
+		"build:win": "electron-builder --win",
+		"build:dir": "electron-builder --dir",
+		"dist": "electron-builder --publish=never",
+		"prepare": "husky",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"lint": "prettier --check ."
+	},
+	"keywords": [
+		"electron",
+		"snippet",
+		"manager",
+		"clipboard",
+		"developer",
+		"tools"
+	],
+	"author": "Copas Development Team",
+	"license": "MIT",
+	"devDependencies": {
+		"electron": "^38.0.0",
+		"electron-builder": "^24.13.3",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.6",
+		"prettier": "^3.6.2"
+	},
+	"build": {
+		"appId": "com.copas.snippet-manager",
+		"productName": "Copas",
+		"artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+		"directories": {
+			"output": "dist"
+		},
+		"files": [
+			"src/**/*",
+			"icon-32x32.ico",
+			"package.json"
+		],
+		"asar": true,
+		"compression": "maximum",
+		"win": {
+			"target": [
+				{
+					"target": "nsis",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "msi",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "portable",
+					"arch": [
+						"x64"
+					]
+				}
+			],
+			"publisherName": "Copas Development Team",
+			"icon": "icon-256x256.ico",
+			"certificateFile": null,
+			"certificatePassword": null
+		},
+		"nsis": {
+			"oneClick": false,
+			"perMachine": false,
+			"allowElevation": true,
+			"allowToChangeInstallationDirectory": true,
+			"createDesktopShortcut": true,
+			"createStartMenuShortcut": true,
+			"runAfterFinish": false,
+			"menuCategory": "Copas",
+			"shortcutName": "Copas Snippet Manager"
+		},
+		"msi": {
+			"oneClick": false,
+			"perMachine": false,
+			"upgradeCode": "12345678-1234-1234-1234-123456789012",
+			"createDesktopShortcut": true,
+			"createStartMenuShortcut": true,
+			"menuCategory": "Copas"
+		},
+		"forceCodeSigning": false,
+		"nodeGypRebuild": false
+	},
+	"lint-staged": {
+		"*.{js,html,css,json,md}": [
+			"prettier --write"
+		]
+	}
 }

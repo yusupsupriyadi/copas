@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Electron
+app/
+release/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# Environment variables
+.env*
+
+# IDE files
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Binary files
+*.exe
+*.msi
+*.ico
+*.png
+*.jpg
+*.jpeg
+
+# Package files
+package-lock.json
+yarn.lock
+
+# Config files that shouldn't be formatted
+CLAUDE.md

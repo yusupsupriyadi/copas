@@ -47,10 +47,12 @@ Download the latest release:
 ## 🎨 Screenshots
 
 ### Light Mode
-*Clean and minimal interface for distraction-free snippet management*
+
+_Clean and minimal interface for distraction-free snippet management_
 
 ### Dark Mode
-*Easy on the eyes with full syntax highlighting support*
+
+_Easy on the eyes with full syntax highlighting support_
 
 ## 🛠️ Tech Stack
 
@@ -64,7 +66,7 @@ Download the latest release:
 
 ### Prerequisites
 
-- Node.js 16+ 
+- Node.js 16+
 - npm 7+
 
 ### Setup
@@ -88,6 +90,11 @@ npm run dev
 npm run dev          # Start app with DevTools
 npm start           # Start app in production mode
 
+# Code Formatting
+npm run format       # Format all files with Prettier
+npm run format:check # Check if files are formatted correctly
+npm run lint         # Check code formatting (alias for format:check)
+
 # Building
 npm run build       # Build for all platforms
 npm run build:win   # Build for Windows only
@@ -108,9 +115,11 @@ JavaScript, TypeScript, HTML, CSS, Python, Java, C++, C#, PHP, Go, Rust, JSON, X
 ## 🔧 Configuration
 
 ### Auto-Start
+
 Enable auto-start from the toggle in the header to launch Copas when Windows starts.
 
 ### Data Storage
+
 All snippets are stored locally in your browser's localStorage. No data is sent to external servers.
 
 ## 🤝 Contributing
@@ -122,6 +131,7 @@ Contributions are welcome! This project follows GitHub's standard contribution w
 ### 🔒 Branch Protection Rules
 
 The `master` branch is protected with the following rules:
+
 - **Pull Request Required**: Direct pushes to master are not allowed
 - **Review Required**: All PRs need at least 1 approving review
 - **Conversation Resolution**: All PR conversations must be resolved
@@ -130,62 +140,69 @@ The `master` branch is protected with the following rules:
 ### 📝 Contribution Workflow
 
 1. **Fork the Repository**
-   ```bash
-   # Fork on GitHub, then clone your fork
-   git clone https://github.com/YOUR_USERNAME/copas.git
-   cd copas
-   ```
+
+    ```bash
+    # Fork on GitHub, then clone your fork
+    git clone https://github.com/YOUR_USERNAME/copas.git
+    cd copas
+    ```
 
 2. **Set Up Development Environment**
-   ```bash
-   # Install dependencies
-   npm install
-   
-   # Start development mode
-   npm run dev
-   ```
+
+    ```bash
+    # Install dependencies
+    npm install
+
+    # Start development mode
+    npm run dev
+    ```
 
 3. **Create Feature Branch**
-   ```bash
-   # Create and switch to feature branch
-   git checkout -b feature/amazing-feature
-   # or for bug fixes
-   git checkout -b fix/bug-description
-   ```
+
+    ```bash
+    # Create and switch to feature branch
+    git checkout -b feature/amazing-feature
+    # or for bug fixes
+    git checkout -b fix/bug-description
+    ```
 
 4. **Make Your Changes**
-   - Follow the existing code style and patterns
-   - Test your changes thoroughly
-   - Ensure the app builds and runs correctly
+    - Follow the existing code style and patterns
+    - Code will be automatically formatted by Prettier on commit
+    - Test your changes thoroughly
+    - Ensure the app builds and runs correctly
 
 5. **Commit Your Changes**
-   ```bash
-   # Stage your changes
-   git add .
-   
-   # Commit with descriptive message
-   git commit -m "feat: add amazing new feature"
-   # or for bug fixes
-   git commit -m "fix: resolve issue with snippet saving"
-   ```
+
+    ```bash
+    # Stage your changes
+    git add .
+
+    # Commit with descriptive message
+    git commit -m "feat: add amazing new feature"
+    # or for bug fixes
+    git commit -m "fix: resolve issue with snippet saving"
+    ```
 
 6. **Push and Create Pull Request**
-   ```bash
-   # Push to your fork
-   git push origin feature/amazing-feature
-   
-   # Create PR on GitHub
-   gh pr create --title "Add amazing new feature" --body "Description of changes"
-   ```
+
+    ```bash
+    # Push to your fork
+    git push origin feature/amazing-feature
+
+    # Create PR on GitHub
+    gh pr create --title "Add amazing new feature" --body "Description of changes"
+    ```
 
 7. **PR Review Process**
-   - Your PR will be reviewed by maintainers
-   - Address any feedback or requested changes
-   - Once approved, it will be merged to master
+    - Your PR will be reviewed by maintainers
+    - Address any feedback or requested changes
+    - Once approved, it will be merged to master
 
 ### 🎯 Contribution Guidelines
 
 #### Code Style
+
 - **Language**: Use vanilla JavaScript (no frameworks)
 - **Structure**: Follow existing project organization in `src/` folder
 - **Consistency**: Match existing code patterns and conventions
@@ -193,15 +210,18 @@ The `master` branch is protected with the following rules:
 - **Compatibility**: Ensure Windows compatibility (primary platform)
 
 #### Commit Messages
+
 Use conventional commit format:
+
 - `feat:` for new features
-- `fix:` for bug fixes  
+- `fix:` for bug fixes
 - `docs:` for documentation
 - `style:` for formatting changes
 - `refactor:` for code restructuring
 - `test:` for adding tests
 
 #### What to Contribute
+
 - 🐛 Bug fixes and improvements
 - ✨ New features from the roadmap
 - 📚 Documentation improvements
@@ -210,6 +230,7 @@ Use conventional commit format:
 - 🧪 Tests and code quality improvements
 
 #### Before Contributing
+
 - Check existing issues and PRs to avoid duplicates
 - For major changes, create an issue first to discuss
 - Ensure your changes don't break existing functionality
@@ -227,7 +248,7 @@ Found a bug? Please [create an issue](https://github.com/yourusername/copas/issu
 ## 📋 Roadmap
 
 - [ ] macOS support
-- [ ] Linux support  
+- [ ] Linux support
 - [ ] Export/Import functionality
 - [ ] Categories/Tags system
 - [ ] Global hotkey support
@@ -238,7 +259,7 @@ Found a bug? Please [create an issue](https://github.com/yourusername/copas/issu
 Copas uses a simple but effective architecture:
 
 - **Main Process** (`main.js`): Window management, tray, IPC
-- **Renderer Process** (`index.html`): UI and application logic  
+- **Renderer Process** (`index.html`): UI and application logic
 - **Preload Script** (`preload.js`): Secure IPC bridge
 - **Styles** (`styles.css`): Complete styling with dark mode
 

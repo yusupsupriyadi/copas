@@ -1,207 +1,297 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Copas (Copy Paste) - Lightweight desktop code snippet manager with syntax highlighting, dark mode, and system tray integration for Windows">
-    <meta name="keywords" content="code snippets, snippet manager, copy paste, developer tools, Windows, Electron, syntax highlighting">
-    <meta name="author" content="Copas Development Team">
-    <title>📋 Copas - Copy Paste Code Snippet Manager for Windows</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="📋 Copas - Copy Paste Code Snippet Manager">
-    <meta property="og:description" content="Lightweight desktop application for managing code snippets with syntax highlighting and dark mode support — Windows only">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://github.com/yusupsupriyadi/copas">
-    <meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.7;
-            color: #1a1a1a;
-            background: #fefefe;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-        }
-        
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-        
-        
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            background: radial-gradient(125% 125% at 50% 10%, #fff 40%, #475569 100%);
-        }
-        
-        .hero h1 {
-            font-size: clamp(48px, 8vw, 88px);
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: #1a1a1a;
-            letter-spacing: -0.04em;
-            line-height: 1.1;
-        }
-        
-        .hero .subtitle {
-            font-size: 20px;
-            margin-bottom: 16px;
-            color: #334155;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-        }
-        
-        .hero .tagline {
-            font-size: 18px;
-            margin-bottom: 48px;
-            color: #475569;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-        
-        /* Download Buttons */
-        .download-section {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-bottom: 60px;
-            flex-wrap: wrap;
-        }
-        
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #fff;
-            color: #1a1a1a;
-            text-decoration: none;
-            padding: 16px 28px;
-            border-radius: 12px;
-            font-weight: 500;
-            font-size: 15px;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-        
-        .download-btn:hover {
-            background: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            border-color: rgba(0, 0, 0, 0.12);
-        }
-        
-        .download-btn.primary {
-            background: #1a1a1a;
-            color: white;
-            border-color: #1a1a1a;
-        }
-        
-        .download-btn.primary:hover {
-            background: #0a0a0a;
-            border-color: #0a0a0a;
-        }
-        
-        
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero .tagline {
-                margin-bottom: 40px;
-            }
-            
-            .download-section {
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-            }
-            
-            .download-btn {
-                width: 100%;
-                max-width: 280px;
-                justify-content: center;
-            }
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Custom selection */
-        ::selection {
-            background: rgba(26, 26, 26, 0.1);
-        }
-        
-        /* Link hover effects */
-        a[style*="color: #64748b"]:hover {
-            color: #475569 !important;
-        }
-    </style>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="Copas (Copy Paste) - Lightweight desktop code snippet manager with syntax highlighting, dark mode, and system tray integration for Windows"
+		/>
+		<meta
+			name="keywords"
+			content="code snippets, snippet manager, copy paste, developer tools, Windows, Electron, syntax highlighting"
+		/>
+		<meta name="author" content="Copas Development Team" />
+		<title>Copas - Copy Paste Code Snippet Manager for Windows</title>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Copas</h1>
-            <div class="subtitle">Copy Paste — Code Snippet Manager</div>
-            <div class="tagline">Lightweight desktop application for managing code snippets with syntax highlighting and dark mode support — Windows only</div>
-            
-            <div class="download-section">
-                <a href="https://github.com/yusupsupriyadi/copas/releases/latest/download/Copas-1.0.0-win-x64.msi" class="download-btn primary">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M0 0h11v11H0V0zm13 0h11v11H13V0zM0 13h11v11H0V13zm13 0h11v11H13V13z"/>
-                    </svg>
-                    Download Installer
-                </a>
-                <a href="https://github.com/yusupsupriyadi/copas/releases/latest/download/Copas-1.0.0-win-x64.exe" class="download-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M0 0h11v11H0V0zm13 0h11v11H13V0zM0 13h11v11H0V13zm13 0h11v11H13V13z"/>
-                    </svg>
-                    Download Portable
-                </a>
-            </div>
-            
-            <div style="display: flex; gap: 24px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                <a href="https://github.com/yusupsupriyadi/copas/releases" style="color: #64748b; text-decoration: none; font-size: 14px; transition: color 0.2s ease;">
-                    View all releases
-                </a>
-                <a href="https://github.com/yusupsupriyadi/copas" style="color: #64748b; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s ease;" target="_blank">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-    </section>
+		<!-- Favicon -->
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>"
+		/>
+		<link
+			rel="apple-touch-icon"
+			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>"
+		/>
 
+		<!-- Open Graph Meta Tags -->
+		<meta
+			property="og:title"
+			content="Copas - Copy Paste Code Snippet Manager"
+		/>
+		<meta
+			property="og:description"
+			content="Lightweight desktop application for managing code snippets with syntax highlighting and dark mode support — Windows only"
+		/>
+		<meta property="og:type" content="website" />
+		<meta
+			property="og:url"
+			content="https://github.com/yusupsupriyadi/copas"
+		/>
+		<meta
+			property="og:image"
+			content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>"
+		/>
 
-</body>
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family:
+					'Inter',
+					-apple-system,
+					BlinkMacSystemFont,
+					'Segoe UI',
+					Roboto,
+					sans-serif;
+				line-height: 1.7;
+				color: #1a1a1a;
+				background: #fefefe;
+				font-weight: 400;
+				letter-spacing: -0.01em;
+			}
+
+			.container {
+				max-width: 1100px;
+				margin: 0 auto;
+				padding: 0 24px;
+			}
+
+			/* Hero Section */
+			.hero {
+				text-align: center;
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				position: relative;
+				background: radial-gradient(
+					125% 125% at 50% 10%,
+					#fff 40%,
+					#475569 100%
+				);
+			}
+
+			.hero h1 {
+				font-size: clamp(48px, 8vw, 88px);
+				margin-bottom: 20px;
+				font-weight: 700;
+				color: #1a1a1a;
+				letter-spacing: -0.04em;
+				line-height: 1.1;
+			}
+
+			.hero .subtitle {
+				font-size: 20px;
+				margin-bottom: 16px;
+				color: #334155;
+				font-weight: 500;
+				letter-spacing: -0.01em;
+			}
+
+			.hero .tagline {
+				font-size: 18px;
+				margin-bottom: 48px;
+				color: #475569;
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+				line-height: 1.6;
+			}
+
+			/* Download Buttons */
+			.download-section {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+				margin-bottom: 60px;
+				flex-wrap: wrap;
+			}
+
+			.download-btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				background: #fff;
+				color: #1a1a1a;
+				text-decoration: none;
+				padding: 16px 28px;
+				border-radius: 12px;
+				font-weight: 500;
+				font-size: 15px;
+				transition: all 0.2s ease;
+				border: 1px solid rgba(0, 0, 0, 0.08);
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+			}
+
+			.download-btn:hover {
+				background: #f8f9fa;
+				transform: translateY(-2px);
+				box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+				border-color: rgba(0, 0, 0, 0.12);
+			}
+
+			.download-btn.primary {
+				background: #1a1a1a;
+				color: white;
+				border-color: #1a1a1a;
+			}
+
+			.download-btn.primary:hover {
+				background: #0a0a0a;
+				border-color: #0a0a0a;
+			}
+
+			/* Responsive Design */
+			@media (max-width: 768px) {
+				.hero .tagline {
+					margin-bottom: 40px;
+				}
+
+				.download-section {
+					flex-direction: column;
+					align-items: center;
+					gap: 12px;
+				}
+
+				.download-btn {
+					width: 100%;
+					max-width: 280px;
+					justify-content: center;
+				}
+			}
+
+			/* Smooth scrolling */
+			html {
+				scroll-behavior: smooth;
+			}
+
+			/* Custom selection */
+			::selection {
+				background: rgba(26, 26, 26, 0.1);
+			}
+
+			/* Link hover effects */
+			a[style*='color: #64748b']:hover {
+				color: #475569 !important;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Hero Section -->
+		<section class="hero">
+			<div class="container">
+				<h1>Copas</h1>
+				<div class="subtitle">Copy Paste — Code Snippet Manager</div>
+				<div class="tagline">
+					Lightweight desktop application for managing code snippets
+					with syntax highlighting and dark mode support — Windows
+					only
+				</div>
+
+				<div class="download-section">
+					<a
+						href="https://github.com/yusupsupriyadi/copas/releases/latest/download/Copas-1.0.0-win-x64.msi"
+						class="download-btn primary"
+					>
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<path
+								d="M0 0h11v11H0V0zm13 0h11v11H13V0zM0 13h11v11H0V13zm13 0h11v11H13V13z"
+							/>
+						</svg>
+						Download Installer
+					</a>
+					<a
+						href="https://github.com/yusupsupriyadi/copas/releases/latest/download/Copas-1.0.0-win-x64.exe"
+						class="download-btn"
+					>
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<path
+								d="M0 0h11v11H0V0zm13 0h11v11H13V0zM0 13h11v11H0V13zm13 0h11v11H13V13z"
+							/>
+						</svg>
+						Download Portable
+					</a>
+				</div>
+
+				<div
+					style="
+						display: flex;
+						gap: 24px;
+						justify-content: center;
+						align-items: center;
+						flex-wrap: wrap;
+					"
+				>
+					<a
+						href="https://github.com/yusupsupriyadi/copas/releases"
+						style="
+							color: #64748b;
+							text-decoration: none;
+							font-size: 14px;
+							transition: color 0.2s ease;
+						"
+					>
+						View all releases
+					</a>
+					<a
+						href="https://github.com/yusupsupriyadi/copas"
+						style="
+							color: #64748b;
+							text-decoration: none;
+							font-size: 14px;
+							display: inline-flex;
+							align-items: center;
+							gap: 6px;
+							transition: color 0.2s ease;
+						"
+						target="_blank"
+					>
+						<svg
+							width="16"
+							height="16"
+							fill="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+							/>
+						</svg>
+						GitHub
+					</a>
+				</div>
+			</div>
+		</section>
+	</body>
 </html>

@@ -5,7 +5,9 @@ Thank you for your interest in contributing to Copas! This document provides gui
 ## 🔒 Repository Rules
 
 ### Branch Protection
+
 The `master` branch is protected with the following rules:
+
 - **No Direct Pushes**: All changes must go through Pull Requests
 - **Review Required**: At least 1 approving review needed
 - **Conversation Resolution**: All discussions must be resolved
@@ -13,6 +15,7 @@ The `master` branch is protected with the following rules:
 - **Stale Reviews**: Reviews are dismissed when new commits are added
 
 ### Merge Strategy
+
 - **Squash Merge**: Preferred for clean commit history
 - **Rebase Merge**: Allowed for linear history
 - **Merge Commits**: Disabled to avoid unnecessary merge commits
@@ -21,11 +24,13 @@ The `master` branch is protected with the following rules:
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 16+ and npm 7+
 - Git knowledge and GitHub account
 - Text editor or IDE (VS Code recommended)
 
 ### Development Setup
+
 ```bash
 # 1. Fork the repository on GitHub
 # 2. Clone your fork
@@ -43,6 +48,7 @@ npm run dev
 ```
 
 ### Project Structure
+
 ```
 copas/
 ├── src/
@@ -60,6 +66,7 @@ copas/
 ## 📝 Development Workflow
 
 ### 1. Create Feature Branch
+
 ```bash
 # Sync with upstream first
 git fetch upstream
@@ -73,12 +80,14 @@ git checkout -b fix/issue-description
 ```
 
 ### 2. Make Changes
+
 - Follow existing code patterns and style
 - Test your changes in both light and dark modes
 - Ensure compatibility with Windows 10/11
 - Keep changes focused and atomic
 
 ### 3. Testing
+
 ```bash
 # Start development mode
 npm run dev
@@ -88,6 +97,7 @@ npm run build:dir
 ```
 
 ### 4. Commit Changes
+
 ```bash
 # Stage changes
 git add .
@@ -99,6 +109,7 @@ git commit -m "docs: update contribution guidelines"
 ```
 
 ### 5. Push and Create PR
+
 ```bash
 # Push to your fork
 git push origin feature/your-feature-name
@@ -108,6 +119,7 @@ gh pr create --title "Add feature: description" --body "Detailed description of 
 ```
 
 ### 6. PR Review Process
+
 - Maintainers will review your PR
 - Address feedback promptly
 - Push updates to the same branch (they'll appear in the PR)
@@ -116,6 +128,7 @@ gh pr create --title "Add feature: description" --body "Detailed description of 
 ## 📋 Contribution Guidelines
 
 ### Code Style
+
 - **Language**: Vanilla JavaScript only (no frameworks)
 - **Indentation**: 4 spaces for JavaScript, 2 spaces for HTML/CSS
 - **Naming**: camelCase for variables/functions, kebab-case for CSS
@@ -123,7 +136,9 @@ gh pr create --title "Add feature: description" --body "Detailed description of 
 - **File Organization**: Keep files in appropriate src/ subdirectories
 
 ### Commit Message Format
+
 Use conventional commits format:
+
 - `feat:` - New features
 - `fix:` - Bug fixes
 - `docs:` - Documentation changes
@@ -134,6 +149,7 @@ Use conventional commits format:
 - `chore:` - Build/tooling changes
 
 Examples:
+
 ```bash
 git commit -m "feat: add export functionality for snippets"
 git commit -m "fix: resolve dark mode syntax highlighting issue"
@@ -141,6 +157,7 @@ git commit -m "docs: update README with new feature documentation"
 ```
 
 ### What We're Looking For
+
 - 🐛 **Bug Fixes**: Issues reported in GitHub Issues
 - ✨ **Features**: Items from the project roadmap
 - 🎨 **UI Improvements**: Better user experience and visual design
@@ -149,6 +166,7 @@ git commit -m "docs: update README with new feature documentation"
 - 🧪 **Testing**: Test coverage and quality assurance
 
 ### What to Avoid
+
 - Breaking changes without discussion
 - Adding heavy dependencies or frameworks
 - Platform-specific code (unless necessary)
@@ -158,18 +176,20 @@ git commit -m "docs: update README with new feature documentation"
 ## 🐛 Bug Reports
 
 When reporting bugs:
+
 1. **Search existing issues** to avoid duplicates
 2. **Use issue templates** when available
 3. **Provide details**:
-   - OS version (Windows 10/11)
-   - App version
-   - Steps to reproduce
-   - Expected vs actual behavior
-   - Screenshots if applicable
+    - OS version (Windows 10/11)
+    - App version
+    - Steps to reproduce
+    - Expected vs actual behavior
+    - Screenshots if applicable
 
 ## 💡 Feature Requests
 
 For new features:
+
 1. **Check the roadmap** first
 2. **Open a discussion** for major features
 3. **Create an issue** with detailed description
@@ -178,12 +198,14 @@ For new features:
 ## 🔧 Development Tips
 
 ### Debugging Electron
+
 - Development mode opens DevTools automatically
 - Use `console.log()` for debugging renderer process
 - Check main process logs in terminal
 - Use Electron DevTools extensions
 
 ### Testing Changes
+
 - Test in both light and dark modes
 - Verify syntax highlighting with different languages
 - Check system tray functionality
@@ -191,6 +213,7 @@ For new features:
 - Verify responsiveness with different snippet lengths
 
 ### Common Issues
+
 - **Build fails**: Check Node.js version, clear cache
 - **App won't start**: Check main.js path references
 - **Styles broken**: Verify CSS file paths and syntax
@@ -199,12 +222,14 @@ For new features:
 ## 🤝 Code Review Process
 
 ### For Contributors
+
 - Be responsive to feedback
 - Ask questions if comments are unclear
 - Make requested changes in separate commits
 - Keep discussions focused and respectful
 
 ### Review Criteria
+
 - Code quality and readability
 - Performance impact
 - User experience implications

@@ -1,428 +1,519 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'">
-    <title>Copas</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="controls">
-                <input type="text" id="searchInput" class="search-input no-drag" placeholder="Search snippets...">
-                <button class="btn no-drag" id="addBtn">+ ADD</button>
-                <div class="auto-start-group no-drag">
-                    <span class="auto-start-label">Auto-start:</span>
-                    <label class="simple-toggle">
-                        <input type="checkbox" id="autoStartToggle">
-                        <span class="toggle-switch"></span>
-                    </label>
-                </div>
-                <button class="btn btn-icon no-drag" id="darkModeBtn" onclick="toggleDark()" title="Toggle Dark Mode">🌙</button>
-            </div>
-        </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'"
+		/>
+		<title>Copas</title>
+		<link rel="stylesheet" href="styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="controls">
+					<input
+						type="text"
+						id="searchInput"
+						class="search-input no-drag"
+						placeholder="Search snippets..."
+					/>
+					<button class="btn no-drag" id="addBtn">+ ADD</button>
+					<div class="auto-start-group no-drag">
+						<span class="auto-start-label">Auto-start:</span>
+						<label class="simple-toggle">
+							<input type="checkbox" id="autoStartToggle" />
+							<span class="toggle-switch"></span>
+						</label>
+					</div>
+					<button
+						class="btn btn-icon no-drag"
+						id="darkModeBtn"
+						onclick="toggleDark()"
+						title="Toggle Dark Mode"
+					>
+						🌙
+					</button>
+				</div>
+			</div>
 
+			<div id="snippetsContainer">
+				<div class="empty-state">
+					<h3>No snippets yet</h3>
+					<p>Click "ADD" button to create your first snippet</p>
+				</div>
+			</div>
+		</div>
 
-        <div id="snippetsContainer">
-            <div class="empty-state">
-                <h3>No snippets yet</h3>
-                <p>Click "ADD" button to create your first snippet</p>
-            </div>
-        </div>
-    </div>
+		<!-- Context Menu -->
+		<div id="contextMenu" class="context-menu">
+			<div class="context-menu-item edit" id="contextEdit">✏️ Edit</div>
+			<div class="context-menu-item delete" id="contextDelete">
+				🗑️ Delete
+			</div>
+		</div>
 
-    <!-- Context Menu -->
-    <div id="contextMenu" class="context-menu">
-        <div class="context-menu-item edit" id="contextEdit">✏️ Edit</div>
-        <div class="context-menu-item delete" id="contextDelete">🗑️ Delete</div>
-    </div>
+		<!-- Modal Add/Edit Snippet -->
+		<div id="snippetModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-body">
+					<form id="snippetForm">
+						<div class="form-group">
+							<label for="languageSelect" class="form-label"
+								>Language:</label
+							>
+							<select id="languageSelect" class="language-select">
+								<option value="plaintext">Plain Text</option>
+								<option value="javascript">JavaScript</option>
+								<option value="html">HTML</option>
+								<option value="css">CSS</option>
+								<option value="python">Python</option>
+								<option value="java">Java</option>
+								<option value="cpp">C++</option>
+								<option value="csharp">C#</option>
+								<option value="php">PHP</option>
+								<option value="go">Go</option>
+								<option value="rust">Rust</option>
+								<option value="typescript">TypeScript</option>
+								<option value="json">JSON</option>
+								<option value="xml">XML</option>
+								<option value="sql">SQL</option>
+								<option value="bash">Bash</option>
+								<option value="powershell">PowerShell</option>
+								<option value="yaml">YAML</option>
+								<option value="markdown">Markdown</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="snippetContent" class="form-label"
+								>Code:</label
+							>
+							<textarea
+								id="snippetContent"
+								required
+								placeholder="Paste your code or text snippet here..."
+							></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-secondary no-drag"
+						id="cancelSnippetBtn"
+					>
+						CANCEL
+					</button>
+					<button class="btn no-drag" id="saveSnippetBtn">
+						SAVE
+					</button>
+				</div>
+			</div>
+		</div>
 
-    <!-- Modal Add/Edit Snippet -->
-    <div id="snippetModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-body">
-                <form id="snippetForm">
-                    <div class="form-group">
-                        <label for="languageSelect" class="form-label">Language:</label>
-                        <select id="languageSelect" class="language-select">
-                            <option value="plaintext">Plain Text</option>
-                            <option value="javascript">JavaScript</option>
-                            <option value="html">HTML</option>
-                            <option value="css">CSS</option>
-                            <option value="python">Python</option>
-                            <option value="java">Java</option>
-                            <option value="cpp">C++</option>
-                            <option value="csharp">C#</option>
-                            <option value="php">PHP</option>
-                            <option value="go">Go</option>
-                            <option value="rust">Rust</option>
-                            <option value="typescript">TypeScript</option>
-                            <option value="json">JSON</option>
-                            <option value="xml">XML</option>
-                            <option value="sql">SQL</option>
-                            <option value="bash">Bash</option>
-                            <option value="powershell">PowerShell</option>
-                            <option value="yaml">YAML</option>
-                            <option value="markdown">Markdown</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="snippetContent" class="form-label">Code:</label>
-                        <textarea id="snippetContent" required placeholder="Paste your code or text snippet here..."></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary no-drag" id="cancelSnippetBtn">CANCEL</button>
-                <button class="btn no-drag" id="saveSnippetBtn">SAVE</button>
-            </div>
-        </div>
-    </div>
+		<script>
+			let snippets = [];
+			let filteredSnippets = [];
+			let currentEditId = null;
+			let contextMenuSnippetId = null;
 
+			function loadSnippets() {
+				const saved = localStorage.getItem('snippets');
+				if (saved) {
+					try {
+						snippets = JSON.parse(saved) || [];
+					} catch {
+						snippets = [];
+					}
+				}
+				filteredSnippets = [...snippets];
+			}
 
-    <script>
-        let snippets = [];
-        let filteredSnippets = [];
-        let currentEditId = null;
-        let contextMenuSnippetId = null;
+			function saveToStorage() {
+				localStorage.setItem('snippets', JSON.stringify(snippets));
+			}
 
-        function loadSnippets() {
-            const saved = localStorage.getItem('snippets');
-            if (saved) {
-                try { snippets = JSON.parse(saved) || []; } catch { snippets = []; }
-            }
-            filteredSnippets = [...snippets];
-        }
+			function generateId() {
+				return (
+					Date.now().toString(36) +
+					Math.random().toString(36).slice(2)
+				);
+			}
 
-        function saveToStorage() {
-            localStorage.setItem('snippets', JSON.stringify(snippets));
-        }
+			function generateTitle(content) {
+				const firstLine = content.split('\n')[0].trim();
+				if (firstLine.length > 0)
+					return firstLine.length > 50
+						? firstLine.substring(0, 50) + '...'
+						: firstLine;
+				return content.length > 50
+					? content.substring(0, 50) + '...'
+					: content;
+			}
 
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).slice(2);
-        }
+			function openAddModal() {
+				currentEditId = null;
+				document.getElementById('snippetContent').value = '';
+				document.getElementById('languageSelect').value = 'plaintext';
+				const modal = document.getElementById('snippetModal');
+				modal.style.display = 'block';
+				modal.classList.add('show');
+				setTimeout(
+					() => document.getElementById('snippetContent').focus(),
+					50
+				);
+			}
 
-        function generateTitle(content) {
-            const firstLine = content.split('\n')[0].trim();
-            if (firstLine.length > 0) return firstLine.length > 50 ? firstLine.substring(0, 50) + '...' : firstLine;
-            return content.length > 50 ? content.substring(0, 50) + '...' : content;
-        }
+			function openEditModal(id) {
+				const snippet = snippets.find((s) => s.id === id);
+				if (!snippet) return;
+				currentEditId = id;
+				document.getElementById('snippetContent').value =
+					snippet.content;
+				document.getElementById('languageSelect').value =
+					snippet.language || 'plaintext';
+				const modal = document.getElementById('snippetModal');
+				modal.style.display = 'block';
+				modal.classList.add('show');
+				setTimeout(
+					() => document.getElementById('snippetContent').focus(),
+					50
+				);
+			}
 
-        function openAddModal() {
-            currentEditId = null;
-            document.getElementById('snippetContent').value = '';
-            document.getElementById('languageSelect').value = 'plaintext';
-            const modal = document.getElementById('snippetModal');
-            modal.style.display = 'block';
-            modal.classList.add('show');
-            setTimeout(() => document.getElementById('snippetContent').focus(), 50);
-        }
+			function closeModal() {
+				const modal = document.getElementById('snippetModal');
+				modal.style.display = 'none';
+				modal.classList.remove('show');
+				currentEditId = null;
+			}
 
-        function openEditModal(id) {
-            const snippet = snippets.find((s) => s.id === id);
-            if (!snippet) return;
-            currentEditId = id;
-            document.getElementById('snippetContent').value = snippet.content;
-            document.getElementById('languageSelect').value = snippet.language || 'plaintext';
-            const modal = document.getElementById('snippetModal');
-            modal.style.display = 'block';
-            modal.classList.add('show');
-            setTimeout(() => document.getElementById('snippetContent').focus(), 50);
-        }
+			function saveSnippet() {
+				const content = document
+					.getElementById('snippetContent')
+					.value.trim();
+				const language =
+					document.getElementById('languageSelect').value;
+				if (!content) return;
 
-        function closeModal() {
-            const modal = document.getElementById('snippetModal');
-            modal.style.display = 'none';
-            modal.classList.remove('show');
-            currentEditId = null;
-        }
+				const title = generateTitle(content);
 
-        function saveSnippet() {
-            const content = document.getElementById('snippetContent').value.trim();
-            const language = document.getElementById('languageSelect').value;
-            if (!content) return;
+				if (currentEditId) {
+					const index = snippets.findIndex(
+						(s) => s.id === currentEditId
+					);
+					if (index !== -1) {
+						snippets[index] = {
+							...snippets[index],
+							title,
+							content,
+							language,
+							updatedAt: new Date().toISOString(),
+						};
+					}
+				} else {
+					const newSnippet = {
+						id: generateId(),
+						title,
+						content,
+						language,
+						createdAt: new Date().toISOString(),
+						updatedAt: new Date().toISOString(),
+					};
+					snippets.unshift(newSnippet);
+				}
 
-            const title = generateTitle(content);
+				saveToStorage();
+				closeModal();
+				filterSnippets(document.getElementById('searchInput').value);
+			}
 
-            if (currentEditId) {
-                const index = snippets.findIndex(s => s.id === currentEditId);
-                if (index !== -1) {
-                    snippets[index] = {
-                        ...snippets[index],
-                        title,
-                        content,
-                        language,
-                        updatedAt: new Date().toISOString()
-                    };
-                }
-            } else {
-                const newSnippet = {
-                    id: generateId(),
-                    title,
-                    content,
-                    language,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                };
-                snippets.unshift(newSnippet);
-            }
+			function deleteSnippet(id) {
+				snippets = snippets.filter((s) => s.id !== id);
+				saveToStorage();
+				filterSnippets(document.getElementById('searchInput').value);
+			}
 
-            saveToStorage();
-            closeModal();
-            filterSnippets(document.getElementById('searchInput').value);
-        }
+			async function copySnippet(content, cardElement) {
+				try {
+					await navigator.clipboard.writeText(content);
+					cardElement.classList.add('copied');
+					setTimeout(
+						() => cardElement.classList.remove('copied'),
+						200
+					);
+				} catch (err) {
+					console.error('Failed to copy: ', err);
+				}
+			}
 
-        function deleteSnippet(id) {
-            snippets = snippets.filter(s => s.id !== id);
-            saveToStorage();
-            filterSnippets(document.getElementById('searchInput').value);
-        }
+			function showContextMenu(event, snippetId) {
+				event.preventDefault();
+				contextMenuSnippetId = snippetId;
 
-        async function copySnippet(content, cardElement) {
-            try {
-                await navigator.clipboard.writeText(content);
-                cardElement.classList.add('copied');
-                setTimeout(() => cardElement.classList.remove('copied'), 200);
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-            }
-        }
+				const contextMenu = document.getElementById('contextMenu');
+				contextMenu.style.display = 'block';
+				contextMenu.style.left = event.pageX + 'px';
+				contextMenu.style.top = event.pageY + 'px';
 
-        function showContextMenu(event, snippetId) {
-            event.preventDefault();
-            contextMenuSnippetId = snippetId;
-            
-            const contextMenu = document.getElementById('contextMenu');
-            contextMenu.style.display = 'block';
-            contextMenu.style.left = event.pageX + 'px';
-            contextMenu.style.top = event.pageY + 'px';
-            
-            setTimeout(() => {
-                document.addEventListener('click', hideContextMenu, { once: true });
-            }, 10);
-        }
+				setTimeout(() => {
+					document.addEventListener('click', hideContextMenu, {
+						once: true,
+					});
+				}, 10);
+			}
 
-        function hideContextMenu() {
-            document.getElementById('contextMenu').style.display = 'none';
-            contextMenuSnippetId = null;
-        }
+			function hideContextMenu() {
+				document.getElementById('contextMenu').style.display = 'none';
+				contextMenuSnippetId = null;
+			}
 
-        function contextEdit() {
-            if (contextMenuSnippetId) {
-                openEditModal(contextMenuSnippetId);
-                hideContextMenu();
-            }
-        }
+			function contextEdit() {
+				if (contextMenuSnippetId) {
+					openEditModal(contextMenuSnippetId);
+					hideContextMenu();
+				}
+			}
 
-        function contextDelete() {
-            if (contextMenuSnippetId) {
-                deleteSnippet(contextMenuSnippetId);
-                hideContextMenu();
-            }
-        }
+			function contextDelete() {
+				if (contextMenuSnippetId) {
+					deleteSnippet(contextMenuSnippetId);
+					hideContextMenu();
+				}
+			}
 
-        function filterSnippets(searchTerm) {
-            if (!searchTerm.trim()) {
-                filteredSnippets = [...snippets];
-            } else {
-                const term = searchTerm.toLowerCase();
-                filteredSnippets = snippets.filter(snippet => 
-                    snippet.title.toLowerCase().includes(term) || 
-                    snippet.content.toLowerCase().includes(term)
-                );
-            }
-            renderSnippets();
-        }
+			function filterSnippets(searchTerm) {
+				if (!searchTerm.trim()) {
+					filteredSnippets = [...snippets];
+				} else {
+					const term = searchTerm.toLowerCase();
+					filteredSnippets = snippets.filter(
+						(snippet) =>
+							snippet.title.toLowerCase().includes(term) ||
+							snippet.content.toLowerCase().includes(term)
+					);
+				}
+				renderSnippets();
+			}
 
-        function renderSnippets() {
-            const container = document.getElementById('snippetsContainer');
-            
-            if (filteredSnippets.length === 0) {
-                const searchTerm = document.getElementById('searchInput').value.trim();
-                if (searchTerm) {
-                    container.innerHTML = `
+			function renderSnippets() {
+				const container = document.getElementById('snippetsContainer');
+
+				if (filteredSnippets.length === 0) {
+					const searchTerm = document
+						.getElementById('searchInput')
+						.value.trim();
+					if (searchTerm) {
+						container.innerHTML = `
                         <div class="empty-state">
                             <h3>No results found</h3>
                             <p>No snippets found matching "${escapeHtml(searchTerm)}"</p>
                         </div>`;
-                } else {
-                    container.innerHTML = `
+					} else {
+						container.innerHTML = `
                         <div class="empty-state">
                             <h3>No snippets yet</h3>
                             <p>Click "ADD" button to create your first snippet</p>
                         </div>`;
-                }
-                return;
-            }
+					}
+					return;
+				}
 
-            const html = `
+				const html = `
                 <div class="snippets-grid">
-                    ${filteredSnippets.map((snippet) => {
-                        const preview = snippet.content;
-                        const language = snippet.language || 'plaintext';
-                        const languageLabel = language !== 'plaintext' ? language.toUpperCase() : '';
-                        return `
+                    ${filteredSnippets
+						.map((snippet) => {
+							const preview = snippet.content;
+							const language = snippet.language || 'plaintext';
+							const languageLabel =
+								language !== 'plaintext'
+									? language.toUpperCase()
+									: '';
+							return `
                             <div class="snippet-card" data-id="${snippet.id}" onclick="copySnippet(\`${escapeHtml(snippet.content).replace(/`/g, '\\\\`')}\`, this)" oncontextmenu="showContextMenu(event, '${snippet.id}'); return false;" style="cursor: pointer;" title="Click to copy">
                                 <div class="snippet-content">
                                     <pre><code class="language-${language}">${escapeHtml(preview)}</code></pre>
                                 </div>
                             </div>`;
-                    }).join('')}
+						})
+						.join('')}
                 </div>`;
 
-            container.innerHTML = html;
-            
-            // Apply syntax highlighting
-            container.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-            });
-        }
+				container.innerHTML = html;
 
+				// Apply syntax highlighting
+				container.querySelectorAll('pre code').forEach((block) => {
+					hljs.highlightElement(block);
+				});
+			}
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+			function escapeHtml(text) {
+				const div = document.createElement('div');
+				div.textContent = text;
+				return div.innerHTML;
+			}
 
+			// Dark mode toggle - SIMPLE HEADER ICON
+			function toggleDark() {
+				var body = document.body;
+				var btn = document.getElementById('darkModeBtn');
 
-        // Dark mode toggle - SIMPLE HEADER ICON
-        function toggleDark() {
-            var body = document.body;
-            var btn = document.getElementById('darkModeBtn');
-            
-            if (body.classList.contains('dark-mode')) {
-                // Matikan dark mode
-                body.classList.remove('dark-mode');
-                btn.textContent = '🌙';
-                localStorage.setItem('theme', 'light');
-            } else {
-                // Aktifkan dark mode  
-                body.classList.add('dark-mode');
-                btn.textContent = '☀️';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-        
-        // Load theme saat page load
-        function loadTheme() {
-            var theme = localStorage.getItem('theme');
-            var btn = document.getElementById('darkModeBtn');
-            if (theme === 'dark') {
-                document.body.classList.add('dark-mode');
-                btn.textContent = '☀️';
-            } else {
-                btn.textContent = '🌙';
-            }
-        }
+				if (body.classList.contains('dark-mode')) {
+					// Matikan dark mode
+					body.classList.remove('dark-mode');
+					btn.textContent = '🌙';
+					localStorage.setItem('theme', 'light');
+				} else {
+					// Aktifkan dark mode
+					body.classList.add('dark-mode');
+					btn.textContent = '☀️';
+					localStorage.setItem('theme', 'dark');
+				}
+			}
 
-        // Auto-start functionality
-        async function toggleAutoStart() {
-            try {
-                const checkbox = document.getElementById('autoStartToggle');
-                const newStatus = checkbox.checked;
-                
-                const result = await window.electronAPI?.setAutoStart(newStatus);
-                if (result?.success) {
-                    // Status sudah updated di checkbox, tidak perlu update lagi
-                } else {
-                    // Revert checkbox jika gagal
-                    checkbox.checked = !newStatus;
-                    console.error('Failed to set auto-start:', result?.error);
-                }
-            } catch (error) {
-                // Revert checkbox jika error
-                const checkbox = document.getElementById('autoStartToggle');
-                checkbox.checked = !checkbox.checked;
-                console.error('Auto-start toggle error:', error);
-            }
-        }
+			// Load theme saat page load
+			function loadTheme() {
+				var theme = localStorage.getItem('theme');
+				var btn = document.getElementById('darkModeBtn');
+				if (theme === 'dark') {
+					document.body.classList.add('dark-mode');
+					btn.textContent = '☀️';
+				} else {
+					btn.textContent = '🌙';
+				}
+			}
 
-        function updateAutoStartToggle(isEnabled) {
-            const checkbox = document.getElementById('autoStartToggle');
-            if (checkbox) {
-                checkbox.checked = isEnabled;
-            }
-        }
+			// Auto-start functionality
+			async function toggleAutoStart() {
+				try {
+					const checkbox = document.getElementById('autoStartToggle');
+					const newStatus = checkbox.checked;
 
-        async function loadAutoStartStatus() {
-            try {
-                if (window.electronAPI?.getAutoStart) {
-                    const status = await window.electronAPI.getAutoStart();
-                    updateAutoStartToggle(status?.value || false);
-                }
-            } catch (error) {
-                console.error('Failed to load auto-start status:', error);
-            }
-        }
+					const result =
+						await window.electronAPI?.setAutoStart(newStatus);
+					if (result?.success) {
+						// Status sudah updated di checkbox, tidak perlu update lagi
+					} else {
+						// Revert checkbox jika gagal
+						checkbox.checked = !newStatus;
+						console.error(
+							'Failed to set auto-start:',
+							result?.error
+						);
+					}
+				} catch (error) {
+					// Revert checkbox jika error
+					const checkbox = document.getElementById('autoStartToggle');
+					checkbox.checked = !checkbox.checked;
+					console.error('Auto-start toggle error:', error);
+				}
+			}
 
+			function updateAutoStartToggle(isEnabled) {
+				const checkbox = document.getElementById('autoStartToggle');
+				if (checkbox) {
+					checkbox.checked = isEnabled;
+				}
+			}
 
-        // Load settings and setup
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSnippets();
-            renderSnippets();
-            
-            // Load theme yang sudah disimpan
-            loadTheme();
-            
-            // Load auto-start status
-            loadAutoStartStatus();
-            
-            // Initialize highlight.js
-            if (typeof hljs !== 'undefined') {
-                hljs.highlightAll();
-            }
-            
-            // Search
-            document.getElementById('searchInput')?.addEventListener('input', (e) => {
-                filterSnippets(e.target.value);
-            });
+			async function loadAutoStartStatus() {
+				try {
+					if (window.electronAPI?.getAutoStart) {
+						const status = await window.electronAPI.getAutoStart();
+						updateAutoStartToggle(status?.value || false);
+					}
+				} catch (error) {
+					console.error('Failed to load auto-start status:', error);
+				}
+			}
 
-            // Modal events
-            document.getElementById('snippetModal')?.addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) closeModal();
-            });
+			// Load settings and setup
+			document.addEventListener('DOMContentLoaded', () => {
+				loadSnippets();
+				renderSnippets();
 
+				// Load theme yang sudah disimpan
+				loadTheme();
 
-            // Close modal with Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    if (document.getElementById('snippetModal').style.display === 'block') {
-                        closeModal();
-                    }
-                }
-            });
+				// Load auto-start status
+				loadAutoStartStatus();
 
-            // Button events
-            document.getElementById('addBtn')?.addEventListener('click', openAddModal);
-            document.getElementById('cancelSnippetBtn')?.addEventListener('click', closeModal);
-            document.getElementById('saveSnippetBtn')?.addEventListener('click', saveSnippet);
-            
-            // Auto-start toggle event
-            document.getElementById('autoStartToggle')?.addEventListener('change', toggleAutoStart);
-            
-            // Language select event (ensure it always works)
-            const languageSelect = document.getElementById('languageSelect');
-            if (languageSelect) {
-                languageSelect.addEventListener('mousedown', (e) => {
-                    e.stopPropagation();
-                });
-                languageSelect.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
-            }
-            
-            // Context menu events
-            document.getElementById('contextEdit')?.addEventListener('click', contextEdit);
-            document.getElementById('contextDelete')?.addEventListener('click', contextDelete);
-            
-            // Hide context menu when clicking outside
-            document.addEventListener('click', hideContextMenu);
-        });
-    </script>
-</body>
+				// Initialize highlight.js
+				if (typeof hljs !== 'undefined') {
+					hljs.highlightAll();
+				}
+
+				// Search
+				document
+					.getElementById('searchInput')
+					?.addEventListener('input', (e) => {
+						filterSnippets(e.target.value);
+					});
+
+				// Modal events
+				document
+					.getElementById('snippetModal')
+					?.addEventListener('click', (e) => {
+						if (e.target === e.currentTarget) closeModal();
+					});
+
+				// Close modal with Escape key
+				document.addEventListener('keydown', (e) => {
+					if (e.key === 'Escape') {
+						if (
+							document.getElementById('snippetModal').style
+								.display === 'block'
+						) {
+							closeModal();
+						}
+					}
+				});
+
+				// Button events
+				document
+					.getElementById('addBtn')
+					?.addEventListener('click', openAddModal);
+				document
+					.getElementById('cancelSnippetBtn')
+					?.addEventListener('click', closeModal);
+				document
+					.getElementById('saveSnippetBtn')
+					?.addEventListener('click', saveSnippet);
+
+				// Auto-start toggle event
+				document
+					.getElementById('autoStartToggle')
+					?.addEventListener('change', toggleAutoStart);
+
+				// Language select event (ensure it always works)
+				const languageSelect =
+					document.getElementById('languageSelect');
+				if (languageSelect) {
+					languageSelect.addEventListener('mousedown', (e) => {
+						e.stopPropagation();
+					});
+					languageSelect.addEventListener('click', (e) => {
+						e.stopPropagation();
+					});
+				}
+
+				// Context menu events
+				document
+					.getElementById('contextEdit')
+					?.addEventListener('click', contextEdit);
+				document
+					.getElementById('contextDelete')
+					?.addEventListener('click', contextDelete);
+
+				// Hide context menu when clicking outside
+				document.addEventListener('click', hideContextMenu);
+			});
+		</script>
+	</body>
 </html>
