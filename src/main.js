@@ -18,10 +18,10 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false
     },
-    icon: path.join(__dirname, 'icon-256x256.ico')
+    icon: path.join(__dirname, '../icon-256x256.ico')
   });
 
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile(path.join(__dirname, 'renderer/index.html'));
 
   if (process.argv.includes('--dev')) {
     mainWindow.webContents.openDevTools();

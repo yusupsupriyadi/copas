@@ -3,7 +3,7 @@
   "productName": "Copas",
   "version": "1.0.0",
   "description": "Simple and efficient snippet manager for developers",
-  "main": "main.js",
+  "main": "src/main.js",
   "homepage": ".",
   "scripts": {
     "start": "electron .",
@@ -35,10 +35,7 @@
       "output": "build"
     },
     "files": [
-      "main.js",
-      "preload.js",
-      "index.html",
-      "styles.css",
+      "src/**/*",
       "icon-32x32.ico",
       "package.json"
     ],
