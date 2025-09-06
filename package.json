@@ -72,7 +72,10 @@
 			"publisherName": "Copas Development Team",
 			"icon": "icon-256x256.ico",
 			"certificateFile": null,
-			"certificatePassword": null
+			"certificatePassword": null,
+			"verifyUpdateCodeSignature": false,
+			"requestedExecutionLevel": "asInvoker",
+			"artifactName": "${productName}-${version}-Setup.${ext}"
 		},
 		"nsis": {
 			"oneClick": false,
