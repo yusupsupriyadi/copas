@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'">
     <title>Copas</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -45,6 +47,31 @@
             <div class="modal-body">
                 <form id="snippetForm">
                     <div class="form-group">
+                        <label for="languageSelect" class="form-label">Language:</label>
+                        <select id="languageSelect" class="language-select">
+                            <option value="plaintext">Plain Text</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="csharp">C#</option>
+                            <option value="php">PHP</option>
+                            <option value="go">Go</option>
+                            <option value="rust">Rust</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="json">JSON</option>
+                            <option value="xml">XML</option>
+                            <option value="sql">SQL</option>
+                            <option value="bash">Bash</option>
+                            <option value="powershell">PowerShell</option>
+                            <option value="yaml">YAML</option>
+                            <option value="markdown">Markdown</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="snippetContent" class="form-label">Code:</label>
                         <textarea id="snippetContent" required placeholder="Paste your code or text snippet here..."></textarea>
                     </div>
                 </form>
@@ -88,6 +115,7 @@
         function openAddModal() {
             currentEditId = null;
             document.getElementById('snippetContent').value = '';
+            document.getElementById('languageSelect').value = 'plaintext';
             const modal = document.getElementById('snippetModal');
             modal.style.display = 'block';
             modal.classList.add('show');
@@ -99,6 +127,7 @@
             if (!snippet) return;
             currentEditId = id;
             document.getElementById('snippetContent').value = snippet.content;
+            document.getElementById('languageSelect').value = snippet.language || 'plaintext';
             const modal = document.getElementById('snippetModal');
             modal.style.display = 'block';
             modal.classList.add('show');
@@ -114,6 +143,7 @@
 
         function saveSnippet() {
             const content = document.getElementById('snippetContent').value.trim();
+            const language = document.getElementById('languageSelect').value;
             if (!content) return;
 
             const title = generateTitle(content);
@@ -125,6 +155,7 @@
                         ...snippets[index],
                         title,
                         content,
+                        language,
                         updatedAt: new Date().toISOString()
                     };
                 }
@@ -133,6 +164,7 @@
                     id: generateId(),
                     title,
                     content,
+                    language,
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString()
                 };
@@ -230,15 +262,24 @@
             const html = `
                 <div class="snippets-grid">
                     ${filteredSnippets.map((snippet) => {
-                        const preview = snippet.content.length > 100 ? snippet.content.substring(0, 100) + '...' : snippet.content;
+                        const preview = snippet.content;
+                        const language = snippet.language || 'plaintext';
+                        const languageLabel = language !== 'plaintext' ? language.toUpperCase() : '';
                         return `
                             <div class="snippet-card" data-id="${snippet.id}" onclick="copySnippet(\`${escapeHtml(snippet.content).replace(/`/g, '\\\\`')}\`, this)" oncontextmenu="showContextMenu(event, '${snippet.id}'); return false;" style="cursor: pointer;" title="Click to copy">
-                                <div class="snippet-content">${escapeHtml(preview)}</div>
+                                <div class="snippet-content">
+                                    <pre><code class="language-${language}">${escapeHtml(preview)}</code></pre>
+                                </div>
                             </div>`;
                     }).join('')}
                 </div>`;
 
             container.innerHTML = html;
+            
+            // Apply syntax highlighting
+            container.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
         }
 
 
@@ -331,6 +372,11 @@
             // Load auto-start status
             loadAutoStartStatus();
             
+            // Initialize highlight.js
+            if (typeof hljs !== 'undefined') {
+                hljs.highlightAll();
+            }
+            
             // Search
             document.getElementById('searchInput')?.addEventListener('input', (e) => {
                 filterSnippets(e.target.value);
@@ -358,6 +404,17 @@
             
             // Auto-start toggle event
             document.getElementById('autoStartToggle')?.addEventListener('change', toggleAutoStart);
+            
+            // Language select event (ensure it always works)
+            const languageSelect = document.getElementById('languageSelect');
+            if (languageSelect) {
+                languageSelect.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                });
+                languageSelect.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
             
             // Context menu events
             document.getElementById('contextEdit')?.addEventListener('click', contextEdit);
